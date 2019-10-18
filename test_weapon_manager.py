@@ -2,11 +2,12 @@
 ACIT-2515 Assignment 2
 Class Name: TestWeaponManager
 Created by: Jun
-Version: 1.0
+Version: 1.2
 Create Date: 2019-10-16
 Description: test cases for class Weapon Manager
 Last Modified:
-- [2019-10-16 :Jun] put all validators in the Abstract class
+- [2019-10-16: Jun] put all validators in the Abstract class
+- [2019-10-18: Jun] Add tearDown method
 """
 
 import unittest
@@ -25,6 +26,14 @@ class TestWeaponManager(unittest.TestCase):
         self.test_sword_1 = Sword("Skull Cleaver", "iron", True, True, 0.91, 3.1, False)
         self.test_sword_2 = Sword("Dawn Splitter", "wood", False, False, 0.82, 2.7, True)
         self.test_sword_3 = Sword("Grimfrost", "wood", False, False, 0.82, 2.7, True)
+        self.test_weapon_manager = Weapon_Manager()
+
+    def tearDown(self) -> None:
+        self.test_firearm_1 = None
+        self.test_firearm_2 = None
+        self.test_sword_1 = None
+        self.test_sword_2 = None
+        self.test_sword_3 = None
         self.test_weapon_manager = Weapon_Manager()
 
     def test_weapon_manager(self):

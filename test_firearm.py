@@ -2,11 +2,12 @@
 ACIT-2515 Assignment 2
 Class Name: TestFirearm
 Created by: Jun
-Version: 1.1
+Version: 1.2
 Create Date: 2019-10-15
 Description: test cases for class Firearm
 Last Modified:
 - [2019-10-15 :Jun] add test case for the get_type method
+- [2019-10-18: Jun] Add tearDown method
 """
 
 import unittest
@@ -20,6 +21,10 @@ class TestFirearm(unittest.TestCase):
     def setUp(self) -> None:
         self.test_firearm_1 = Firearm("Armsel Striker", "iron", False, True, 50, 50)
         self.test_firearm_2 = Firearm("Beretta A303", "iron", False, False, 0, 100)
+
+    def tearDown(self) -> None:
+        self.test_firearm_1 = None
+        self.test_firearm_2 = None
 
     def test_firearm(self):
         """ 001 Test the constructor """

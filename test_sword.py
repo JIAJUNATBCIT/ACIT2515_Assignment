@@ -2,11 +2,12 @@
 ACIT-2515 Assignment 2
 Class Name: TestSword
 Created by: Jun
-Version: 1.1
+Version: 1.2
 Create Date: 2019-10-15
 Description: test cases for class Sword
 Last Modified:
 - [2019-10-15 :Jun] add test case for the get_type method
+- [2019-10-18: Jun] Add tearDown method
 """
 
 import unittest
@@ -20,6 +21,10 @@ class TestSword(unittest.TestCase):
     def setUp(self) -> None:
         self.test_sword_1 = Sword("Skull Cleaver", "iron", True, True, 0.91, 3.1, False)
         self.test_sword_2 = Sword("Dawn Splitter", "wood", False, False, 0.82, 2.7, True)
+
+    def tearDown(self) -> None:
+        self.test_sword_1 = None
+        self.test_sword_2 = None
 
     def test_sword(self):
         """ 001 - Test the constructor """
