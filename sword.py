@@ -44,8 +44,30 @@ class Sword(AbstractWeapon):
 
     def get_type(self):
         # return type of the sword
-        self._type = "Sword"
-        return self._type
+        return "Sword"
+
+    def get_usage_status(self):
+        # If the bullet number greater than 0, this sword is in use
+        if self._sharp > 0.8:
+            self.set_is_inuse(False)
+        else:
+            self.set_is_inuse(True)
+        return self.get_is_inuse()
+
+    def to_dict(self):
+        # convert the sword object into python dictionary
+        dict = {
+            'id' : self._id,
+            'name': self._name,
+            'materials': self._materials,
+            'is_cold_weapon': self._is_cold_weapon,
+            'is_inuse': self._is_inuse,
+            'sharp': self._sharp,
+            'length': self._length,
+            'is_double_edged': self._is_double_edged,
+            'type': self.get_type()
+        }
+        return dict
 
     @staticmethod
     def _validate_float_input(display_name, float_obj):

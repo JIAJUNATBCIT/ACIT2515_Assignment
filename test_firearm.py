@@ -2,12 +2,13 @@
 ACIT-2515 Assignment 2
 Class Name: TestFirearm
 Created by: Jun
-Version: 1.2
+Version: 1.3
 Create Date: 2019-10-15
 Description: test cases for class Firearm
 Last Modified:
 - [2019-10-15 :Jun] add test case for the get_type method
 - [2019-10-18: Jun] Add tearDown method
+- [2019-11-15: Jun] Add test case for the to_dict method
 """
 
 import unittest
@@ -145,6 +146,24 @@ class TestFirearm(unittest.TestCase):
 
         # 008A - Should return 'Firearm' string
         self.assertEqual(self.test_firearm_1.get_type(), "Firearm")
+
+    def test_to_dict(self):
+        """ 009 - Test the to_dict method """
+
+        test_firearm = {
+            "id": 0,
+            "name": "Armsel Striker",
+            "materials": "iron",
+            "is_cold_weapon": False,
+            "is_inuse": True,
+            "bullets_num": 50,
+            "range": 50,
+            "is_overheat": False,
+            "type": "Firearm"
+        }
+
+        # 007A - should return a dictionary same as the test_firearm
+        self.assertEqual(self.test_firearm_1.to_dict(), test_firearm)
 
 
 if __name__ == '__main__':

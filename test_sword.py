@@ -2,12 +2,13 @@
 ACIT-2515 Assignment 2
 Class Name: TestSword
 Created by: Jun
-Version: 1.2
+Version: 1.3
 Create Date: 2019-10-15
 Description: test cases for class Sword
 Last Modified:
 - [2019-10-15 :Jun] add test case for the get_type method
 - [2019-10-18: Jun] Add tearDown method
+- [2019-11-15: Jun] Add test case for the to_dict method
 """
 
 import unittest
@@ -121,6 +122,24 @@ class TestSword(unittest.TestCase):
 
         # 006A - Should return 'Sword' string
         self.assertEqual(self.test_sword_1.get_type(), "Sword")
+
+    def test_to_dict(self):
+        """ 007 - Test the to_dict method """
+
+        test_sword = {
+            "id": 0,
+            "name": "Skull Cleaver",
+            "materials": "iron",
+            "is_cold_weapon": True,
+            "is_inuse": True,
+            "sharp": 0.91,
+            "length": 3.1,
+            "is_double_edged": False,
+            "type": "Sword"
+        }
+
+        # 007A - should return a dictionary same as the test_sword
+        self.assertEqual(self.test_sword_1.to_dict(), test_sword)
 
 
 if __name__ == '__main__':

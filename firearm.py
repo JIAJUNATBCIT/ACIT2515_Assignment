@@ -35,7 +35,6 @@ class Firearm(AbstractWeapon):
         AbstractWeapon._validate_int_input(Firearm.BULLETS_NUM_LABEL, bullets_num)
         self._bullets_num = bullets_num
 
-
     def get_bullets_num(self):
         # return bullet numbers - int
         return self._bullets_num
@@ -55,5 +54,28 @@ class Firearm(AbstractWeapon):
 
     def get_type(self):
         # return type of the weapon
-        self._type = "Firearm"
-        return self._type
+        return "Firearm"
+
+    def get_usage_status(self):
+        # If the bullet number greater than 0, this firearm is in use
+        if self._bullets_num > 0:
+            self.set_is_inuse(True)
+        else:
+            self.set_is_inuse(False)
+        return self.get_is_inuse()
+
+    def to_dict(self):
+        # convert the sword object into python dictionary
+        dict = {
+            'id': self._id,
+            'name': self._name,
+            'materials': self._materials,
+            'is_cold_weapon': self._is_cold_weapon,
+            'is_inuse': self._is_inuse,
+            'bullets_num': self._bullets_num,
+            'range': self._range,
+            'is_overheat': self._is_overheat,
+            'type': self.get_type()
+        }
+        return dict
+

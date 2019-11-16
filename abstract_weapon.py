@@ -85,6 +85,14 @@ class AbstractWeapon:
         # Abstract method for get_type
         raise NotImplementedError("Get_type method must be implemented")
 
+    def get_usage_status(self):
+        # Abstract method for usage status
+        raise NotImplementedError("get_usage_status must be implemented")
+
+    def to_dict(self):
+        # Abstract method for convert the object into dictionary
+        raise NotImplementedError("to_dict must be implemented")
+
     @staticmethod
     def _validate_int_input(display_name, int_obj):
         # check if input is a boolean
