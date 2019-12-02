@@ -110,10 +110,10 @@ class UpdateSwordPopup(tk.Frame):
 
     # Implement your code here
     def _update_sword(self, data):
-        """ Adds a phone to the backend grid """
+        """ update a sword to the backend grid """
         url = "http://127.0.0.1:5000/weaponwarehouse/weapons/" + self._id
         headers = {"content-type": "application/json"}
-        response = requests.post(url, json=data, headers=headers)
+        response = requests.put(url, json=data, headers=headers)
 
         if response.status_code == 200:
             self._close_cb()
