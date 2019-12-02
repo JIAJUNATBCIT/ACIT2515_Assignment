@@ -1,0 +1,10 @@
+{
+	"name": "Armsel Striker",
+	"materials": "iron",
+	"is_cold_weapon": false,
+	"is_inuse": true,
+	"manufacture_date": "2002-11-03",
+	"bullets_num": 50,
+	"range": 50.0,
+	"type": "Firearm"
+}

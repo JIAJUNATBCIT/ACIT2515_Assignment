@@ -1,23 +1,26 @@
 """
-ACIT-2515 Assignment 3
+ACIT-2515 Assignment 4
 Class Name: WeaponManagerAPI
 Created by: Jun
-Version: 1.1
+Version: 2.0
 Create Date: 2019-10-14
 Description: A RESTFul API for the WeaponManager
 Last Modified:
 - [2019-10-16: Jun] convert id into integer
+- [2019-12-01 :Jun] adjust the class to adapt to the SQLAlchemy
 """
+
 
 from flask import Flask, request
 import json
 from sword import Sword
 from firearm import Firearm
 from weapon_manager import WeaponManager
+from datetime import datetime
 
 
 app = Flask(__name__)
-my_weapon_warehouse = WeaponManager("./data_storage/weapons.txt")
+my_weapon_warehouse = WeaponManager("weapons.sqlite")
 
 
 @app.route('/weaponwarehouse/weapons', methods=['POST'])
@@ -29,21 +32,23 @@ def add_weapon():
             sword = Sword(
                         content["name"],
                         content["materials"],
-                        content["is_cold_weapon"],
-                        content["is_inuse"],
-                        content["sharp"],
-                        content["length"],
-                        content["is_double_edged"]
+                        bool(content["is_cold_weapon"]),
+                        bool(content["is_inuse"]),
+                        datetime.strptime(content["manufacture_date"], "%Y-%m-%d"),
+                        float(content["sharp"]),
+                        float(content["length"]),
+                        bool(content["is_double_edged"])
                     )
             my_weapon_warehouse.add(sword)
         else:
             firearm = Firearm(
                         content["name"],
                         content["materials"],
-                        content["is_cold_weapon"],
-                        content["is_inuse"],
-                        content["bullets_num"],
-                        content["range"]
+                        bool(content["is_cold_weapon"]),
+                        bool(content["is_inuse"]),
+                        datetime.strptime(content["manufacture_date"], "%Y-%m-%d"),
+                        int(content["bullets_num"]),
+                        float(content["range"])
                       )
             my_weapon_warehouse.add(firearm)
         response = app.response_class(
@@ -66,24 +71,26 @@ def update_weapon(id):
             sword = Sword(
                 content["name"],
                 content["materials"],
-                content["is_cold_weapon"],
-                content["is_inuse"],
-                content["sharp"],
-                content["length"],
-                content["is_double_edged"]
+                bool(content["is_cold_weapon"]),
+                bool(content["is_inuse"]),
+                datetime.strptime(content["manufacture_date"], "%Y-%m-%d"),
+                float(content["sharp"]),
+                float(content["length"]),
+                bool(content["is_double_edged"])
             )
-            sword.set_id(int(id))
+            sword.id = int(id)
             my_weapon_warehouse.update(sword)
         else:
             firearm = Firearm(
                 content["name"],
                 content["materials"],
-                content["is_cold_weapon"],
-                content["is_inuse"],
-                content["bullets_num"],
-                content["ranage"]
+                bool(content["is_cold_weapon"]),
+                bool(content["is_inuse"]),
+                datetime.strptime(content["manufacture_date"], "%Y-%m-%d"),
+                int(content["bullets_num"]),
+                float(content["range"])
             )
-            firearm.set_id(int(id))
+            firearm.id = int(id)
             my_weapon_warehouse.update(firearm)
         response = app.response_class(
             status=200,
@@ -142,7 +149,7 @@ def get_all_weapon():
         weapons_temp = []
         for weapon in weapons:
             weapons_temp.append(json.dumps(weapon.to_dict()))
-        if weapons is None :
+        if weapons is None:
             raise ValueError("Get all weapons failed")
         response = app.response_class(
             status=200,
@@ -186,6 +193,43 @@ def get_weapons_stats():
         response = app.response_class(
             status=200,
             response=json.dumps(report.to_dict()),
+            mimetype='application/json'
+        )
+    except ValueError as e:
+        response = app.response_class(
+            response=str(e),
+            status=404
+        )
+    return response
+
+
+@app.route('/weaponwarehouse/weapons/reports/<type>', methods=['GET'])
+def get_weapons_report(type):
+    """ Get all weapons usage report from the WeaponManager """
+    try:
+        desc = my_weapon_warehouse.get_weapons_reports(type)
+        response = app.response_class(
+            status=200,
+            response=json.dumps(desc),
+            mimetype='application/json'
+        )
+    except ValueError as e:
+        response = app.response_class(
+            response=str(e),
+            status=404
+        )
+    return response
+
+
+@app.route('/weaponwarehouse/weapons/retire', methods=['PUT'])
+def complete_repair():
+    """ Complete a Phone or Tablet repair in the RepairManager for a given cost based on the Serial Number """
+    content = request.json
+    try:
+        my_weapon_warehouse.set_retire(content["id"], datetime.strptime(content["retired_date"], "%Y-%m-%d"),)
+        response = app.response_class(
+            status=200,
+            response="Success",
             mimetype='application/json'
         )
     except ValueError as e:

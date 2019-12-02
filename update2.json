@@ -1,0 +1,10 @@
+{
+	"name": "Beretta A303",
+	"materials": "iron",
+	"is_cold_weapon": false,
+	"is_inuse": true,
+	"manufacture_date": "2001-1-12",
+	"bullets_num": 30,
+	"range": 50.0,
+	"type": "Firearm"
+}

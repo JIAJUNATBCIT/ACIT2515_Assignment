@@ -1,15 +1,17 @@
 """
-ACIT-2515 Assignment 2
+ACIT-2515 Assignment 4
 Class Name: Firearm
 Created by: Jun
-Version: 1.1
+Version: 2.0
 Create Date: 2019-10-14
 Description: A child class of Abstract Weapon
 Last Modified:
 - [2019-10-14 :Jun] add validators for the parameters
+- [2019-12-01 :Jun] re-write the whole class to make it as a SQLAlchemy declarative
 """
 
 from abstract_weapon import AbstractWeapon
+from sqlalchemy import Column, String, Integer, Float, DateTime
 
 
 class Firearm(AbstractWeapon):
@@ -19,63 +21,48 @@ class Firearm(AbstractWeapon):
     RANGE_LABEL = "Firearm range"
     IS_OVERHEAT_LABEL = "Firearm is_overheat"
 
+    WEAPON_TYPE = "Firearm"
+    bullets_num = Column(Integer)
+    range = Column(Float)
+    is_overheat = Column(Integer)
+
     # Statistics on a firearm entity
-    def __init__(self, name, materials, is_cold_weapon, is_inuse, bullets_num, range):
+    def __init__(self, name, materials, is_cold_weapon, is_inuse, manufacture_date, bullets_num, range):
         # Initialize parent class
-        super().__init__(name, materials, is_cold_weapon, is_inuse)
+        super().__init__(name, materials, is_cold_weapon, is_inuse, manufacture_date, Firearm.WEAPON_TYPE)
         # Initialize the data values
         AbstractWeapon._validate_int_input(Firearm.BULLETS_NUM_LABEL, bullets_num)
-        self._bullets_num = bullets_num
-        AbstractWeapon._validate_int_input(Firearm.RANGE_LABEL, range)
-        self._range = range
-        self._is_overheat = False
-
-    def set_bullets_num(self, bullets_num):
-        # setter for firearm bullets number
-        AbstractWeapon._validate_int_input(Firearm.BULLETS_NUM_LABEL, bullets_num)
-        self._bullets_num = bullets_num
-
-    def get_bullets_num(self):
-        # return bullet numbers - int
-        return self._bullets_num
-
-    def get_range(self):
-        # return range - int
-        return self._range
-
-    def get_overheat(self):
-        # return overheat status - boolean
-        return self._is_overheat
-
-    def set_overheat(self, is_overheat):
-        # setter for firearm overheat status
-        AbstractWeapon._validate_boolean_input(Firearm.IS_OVERHEAT_LABEL, is_overheat)
-        self._is_overheat = is_overheat
+        self.bullets_num = bullets_num
+        AbstractWeapon._validate_float_input(Firearm.RANGE_LABEL, range)
+        self.range = range
+        self.is_overheat = AbstractWeapon.BOOLEAN_FALSE
 
     def get_type(self):
         # return type of the weapon
-        return "Firearm"
+        return self.WEAPON_TYPE
 
     def get_usage_status(self):
-        # If the bullet number greater than 0, this firearm is in use
-        if self._bullets_num > 0:
-            self.set_is_inuse(True)
+        if self.is_inuse:
+            status = "[" + str(self.id) + "]" + self.name + " is a(n) " + self.type + " manufactured at " +\
+                     self.manufacture_date.strftime("%Y-%m-%d") + " and still in use"
         else:
-            self.set_is_inuse(False)
-        return self.get_is_inuse()
+            status = "[" + str(self.id) + "]" + self.name + " is a(n) " + self.type + " was manufactured at " + \
+                     self.manufacture_date.strftime("%Y-%m-%d") + " and retired at " + self.retired_date.strftime("%Y-%m-%d") if self.retired_date else None
+        return status
 
     def to_dict(self):
         # convert the sword object into python dictionary
         dict = {
-            'id': self._id,
-            'name': self._name,
-            'materials': self._materials,
-            'is_cold_weapon': self._is_cold_weapon,
-            'is_inuse': self._is_inuse,
-            'bullets_num': self._bullets_num,
-            'range': self._range,
-            'is_overheat': self._is_overheat,
+            'id' : self.id,
+            'name': self.name,
+            'materials': self.materials,
+            'is_cold_weapon': self.is_cold_weapon,
+            'is_inuse': self.is_inuse,
+            'manufacture_date': self.manufacture_date.strftime("%Y-%m-%d"),
+            'retired_date': self.retired_date.strftime("%Y-%m-%d") if self.retired_date else None,
+            'bullets_num': self.bullets_num,
+            'range': self.range,
+            'is_overheat': self.is_overheat,
             'type': self.get_type()
         }
         return dict
-
