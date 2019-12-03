@@ -73,7 +73,7 @@ class UpdateSwordPopup(tk.Frame):
         radio5.grid(row=10, column=2)
         radio6 = tk.Radiobutton(self, text="No", value=False, variable=self._is_double_edged)
         radio6.grid(row=10, column=3)
-        self._is_inuse.set(sword["is_double_edged"])
+        self._is_double_edged.set(sword["is_double_edged"])
 
         tk.Button(self, text="Submit", command=self._submit_cb).grid(row=11, column=1)
         tk.Button(self, text="Close", command=self._close_cb).grid(row=11, column=2)
